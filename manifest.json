@@ -1,0 +1,11 @@
+{
+	"name": "Chromium Monitor",
+	"version": "1.1",
+	"description": "Monitors active chromium browser tabs",
+	"permissions": ["tabs","storage"],
+	"background": {
+		"scripts": ["monitor.js"],
+		"persistent": false
+	},
+	"manifest_version": 2
+}
