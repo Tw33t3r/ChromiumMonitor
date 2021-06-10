@@ -77,3 +77,4 @@ function recordTime(url, time){
 }
 
 // TODO: build a webpage that populates data from storage and shows data collected.
+// Using Chrome.runtime??
