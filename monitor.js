@@ -7,12 +7,23 @@
 let ids = new Map();
 var activeID = '';
 
-//https://developer.chrome.com/docs/extensions/mv3/messaging/
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse){
-		sendResponse({
+chrome.runtime.onInstalled.addListener((reason)=>{
+	let data = new Map();
+	data.set('',0.0)
+	chrome.storage.local.set({ 'map': Object.fromEntries(data) }, function () {
+	});
+})
 
-		});
+chrome.runtime.onMessage.addListener(
+	function (request, sender, sendResponse) {
+		if (request.origin == "popup") {
+			chrome.storage.local.get(['map'], function (result) {
+				savedData = new Map(Object.entries(result.map));
+				console.log(savedData);
+				sendResponse({ data: Object.fromEntries(savedData)});
+			});
+		}
+		return true;
 	}
 );
 
@@ -73,17 +84,20 @@ function newActive(id, url) {
 function recordTime(url, time) {
 	//Unsure if data sanitation is necessary for url, storage area is unencrypted anyway
 	//key:: url, value:: time (total time active)
-	chrome.storage.local.get('url', function (result) {
-		var timeActive = result.url;
+	chrome.storage.local.get(['map'], function (result) {
+		data = new Map(Object.entries(result.map));
+	//	console.log(data);
+		var timeActive = data.get(url);
 		if (typeof timeActive === "undefined") {
-			chrome.storage.local.set({ url: time }, function () {
-				console.log("data is: " + time + " " + url)
+			data.set(url, time);
+			chrome.storage.local.set({ 'map': Object.fromEntries(data) }, function () {
 			});
 		}
 		else {
 			timeActive = timeActive + time;
-			chrome.storage.local.set({ url: timeActive }, function () {
-				console.log("data is: " + timeActive + " " + url)
+			data.set(url,timeActive);
+			chrome.storage.local.set({ 'map': Object.fromEntries(data) }, function () {
+			//	console.log("set url with " + url + " and time as " + timeActive);
 			});
 		}
 	});
