@@ -1,12 +1,16 @@
 function parseData(value, key, map) {
-    console.log(`map.get('${key}') = ${value}`);
+    if(key != '' && key != 'extensions' && key != 'newtab'){
+        var par = window.document.createElement("p");
+        var time = Math.round(value /1000);  
+        par.innerHTML = "<p>" + `${key}` + ": " + time + "s </p>";
+        document.body.appendChild(par);
+    }
 }
 
 window.onload = function () {
     chrome.runtime.sendMessage({ origin: "popup" }, function (response) {
-        console.log(response.data)
         data = new Map(Object.entries(response.data));
-        console.log(data);
-        window.document.getElementById("data").innerHTML = data.forEach(parseData);
+        data.forEach(parseData)
+        window.document.getElementById("data").innerHTML = "Recorded Data is:";
     });
 }
