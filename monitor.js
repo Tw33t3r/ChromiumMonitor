@@ -45,7 +45,7 @@ chrome.tabs.onActivated.addListener(function (activeInfo) {
 });
 
 function newActive(id, url) {
-	let time = performance.now();
+	let time = Date.now();
 	if (!ids.has(id)) {
 		ids.set(id, { url, time });
 		if (activeID != '') {

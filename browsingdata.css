@@ -1,0 +1,16 @@
+body{
+    width:750px;
+    height: 500px;
+}
+
+canvas{
+    width: inherit;
+    height: inherit;
+}
+
+.canvas-container{
+    top: 200px;
+    overflow:scroll;
+    width: inherit;
+    height: inherit;
+}
